@@ -65,11 +65,11 @@ model=MLPClassifier(alpha=0.01, batch_size=256, epsilon=1e-08, hidden_layer_size
 model.fit(x_train, y_train)
 
 y_pred = model.predict(x_test)
-accuracy = accuracy_score(y_true=y_test, y_pred=y_pred)
-
-print("Accuracy: {:.2f}%".format(accuracy*100))
-df = pd.DataFrame({"Actual": y_test, 'Predicted': y_pred})
-print(df.head(20))
+# accuracy = accuracy_score(y_true=y_test, y_pred=y_pred)
+#
+# print("Accuracy: {:.2f}%".format(accuracy*100))
+# df = pd.DataFrame({"Actual": y_test, 'Predicted': y_pred})
+# print(df.head(20))
 
 with open('model.sav', 'wb') as f:
     pickle.dump(model, f)
