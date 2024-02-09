@@ -1,6 +1,6 @@
 import pickle
 import speech_recognition as sr
-from first import *
+from model import extract_feature
 
 filename = 'model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
