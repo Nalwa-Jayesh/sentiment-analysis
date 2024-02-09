@@ -1,22 +1,24 @@
-import pickle
 import speech_recognition as sr
-from model import *
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-filename = 'model.sav'
-loaded_model = pickle.load(open(filename, 'rb'))
-recogniser = sr.Recognizer()
+recognizer = sr.Recognizer()
+
 with sr.Microphone() as source:
     print('Clearing background noise...')
-    recogniser.adjust_for_ambient_noise(source, duration=1)
-    print('Waitng for your message...')
-    recorded_audio = recogniser.listen(source)
+    recognizer.adjust_for_ambient_noise(source, duration=1)
+    print('Waiting for message...')
+    recorded_audio = recognizer.listen(source)
     print('Done recording...')
 
-with open('result.wav', 'wb') as f:
-    f.write(recorded_audio.get_wav_data())
+try:
+    print('Printing the message...')
+    text = recognizer.recognize_google_cloud(recorded_audio, language='en-US')
+    print(f'Your message: {text}')
+except Exception as e:
+    print(e)
 
-feature = extract_feature("result.wav", mfcc=True, chroma=True, mel=True)
-feature = feature.reshape(1, -1)
-prediction = loaded_model.predict(feature)
-print(f"Prediction: {prediction}")
+sentence = [str(text)]
+analyser = SentimentIntensityAnalyzer()
 
+for i in sentence:
+    v = analyser.polarity_scores(i)
